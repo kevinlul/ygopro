@@ -77,7 +77,7 @@ install:
     mv freetype-$FREETYPE freetype;
     cd freetype;
     curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://raw.githubusercontent.com/soarqin/ygopro/master/freetype/premake4.lua;
-    cd -
+    cd ..;
   fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
     if [[ -f cache/lib/libfmt.a ]]; then 
