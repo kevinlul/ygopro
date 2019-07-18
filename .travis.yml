@@ -42,27 +42,27 @@ matrix:
   - os: windows
     env:
     - FREETYPE=2.4.11 
-    - DEPLOY_BRANCH=freetype-$FREETYPE
+    - DEPLOY_BRANCH=freetype-2.4.11 
   - os: windows
     env:
     - FREETYPE=2.5.5 
-    - DEPLOY_BRANCH=freetype-$FREETYPE
+    - DEPLOY_BRANCH=freetype-2.5.5
   - os: windows
     env:
     - FREETYPE=2.6.5 
-    - DEPLOY_BRANCH=freetype-$FREETYPE
+    - DEPLOY_BRANCH=freetype-2.6.5
   - os: windows
     env:
     - FREETYPE=2.7.1 
-    - DEPLOY_BRANCH=freetype-$FREETYPE
+    - DEPLOY_BRANCH=freetype-2.7.1
   - os: windows
     env:
     - FREETYPE=2.8.1 
-    - DEPLOY_BRANCH=freetype-$FREETYPE
+    - DEPLOY_BRANCH=freetype-2.8.1
   - os: windows
     env:
     - FREETYPE=2.9.1 
-    - DEPLOY_BRANCH=freetype-$FREETYPE
+    - DEPLOY_BRANCH=freetype-2.9.1
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then ./build-support/install-windows-bin.sh; fi  
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build-support/install-ubuntu-bin.sh; fi
@@ -72,7 +72,7 @@ install:
     export VCPKG_ROOT=/c/vcpkg;
     ./build-support/install-windows-vcpkg-cache.sh;
     $VCPKG_ROOT/vcpkg.exe remove freetype:x86-windows-static;
-    curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name http://downloads.sourceforge.net/freetype/freetype-$FREETYPE.tar.bz;
+    curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name http://downloads.sourceforge.net/freetype/freetype-$FREETYPE.tar.bz2;
     tar xf freetype-$FREETYPE.tar.bz2;
     mv freetype-$FREETYPE freetype;
     cd freetype;
