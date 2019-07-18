@@ -39,37 +39,30 @@ addons:
     - nlohmann-json
 matrix:
   include:
-  - name: "Windows 10"
-    os: windows
-    env: DEPLOY_BRANCH=travis-windows
-    cache: false
-  - name: "High Sierra"
-    os: osx
-    osx_image: xcode9.4
-    env: DEPLOY_BRANCH=travis-high-sierra
-  - name: "Mojave"
-    os: osx
-    osx_image: xcode10.2
-    env:  DEPLOY_BRANCH=travis-mojave
-  - name: "Sierra"
-    os: osx
-    osx_image: xcode9.2
-    env: DEPLOY_BRANCH=travis-sierra
-  - name: "El Capitan"
-    os: osx
-    osx_image: xcode8
-    env: DEPLOY_BRANCH=travis-el-capitan
-  - name: "Xenial GCC9"
-    os: linux
-    compiler: gcc  
+  - os: windows
     env:
-    - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"  
-    - DEPLOY_BRANCH=travis-linux
-  - name: "Xenial GCC5.4"
-    os: linux
-    compiler: gcc
-    env: BUILD_CONFIG=release
-    deploy: false
+    - FREETYPE=2.4.11 
+    - DEPLOY_BRANCH=freetype-$FREETYPE
+  - os: windows
+    env:
+    - FREETYPE=2.5.5 
+    - DEPLOY_BRANCH=freetype-$FREETYPE
+  - os: windows
+    env:
+    - FREETYPE=2.6.5 
+    - DEPLOY_BRANCH=freetype-$FREETYPE
+  - os: windows
+    env:
+    - FREETYPE=2.7.1 
+    - DEPLOY_BRANCH=freetype-$FREETYPE
+  - os: windows
+    env:
+    - FREETYPE=2.8.1 
+    - DEPLOY_BRANCH=freetype-$FREETYPE
+  - os: windows
+    env:
+    - FREETYPE=2.9.1 
+    - DEPLOY_BRANCH=freetype-$FREETYPE
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then ./build-support/install-windows-bin.sh; fi  
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build-support/install-ubuntu-bin.sh; fi
@@ -78,6 +71,13 @@ install:
 - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then 
     export VCPKG_ROOT=/c/vcpkg;
     ./build-support/install-windows-vcpkg-cache.sh;
+    $VCPKG_ROOT/vcpkg.exe remove freetype:x86-windows-static;
+    curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name http://downloads.sourceforge.net/freetype/freetype-$FREETYPE.tar.bz;
+    tar xf freetype-$FREETYPE.tar.bz2;
+    mv freetype-$FREETYPE freetype;
+    cd freetype;
+    curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://raw.githubusercontent.com/soarqin/ygopro/master/freetype/premake4.lua;
+    cd -
   fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
     if [[ -f cache/lib/libfmt.a ]]; then 
@@ -142,6 +142,3 @@ before_cache:
     cp /usr/local/include/lua.h /usr/local/include/luaconf.h /usr/local/include/lualib.h /usr/local/include/lauxlib.h /usr/local/include/lua.hpp cache &&
     cp /usr/local/lib/liblua.a cache/liblua.a;
   fi
-cache:
-  directories:
-  - cache
