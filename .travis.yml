@@ -8,6 +8,7 @@ env:
   global:
   - BUILD_CONFIG=release
   - MSBUILD_PATH="/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+  - FREETYPE=2.10.1
 addons:
   apt:
     update: true
@@ -40,29 +41,17 @@ addons:
 matrix:
   include:
   - os: windows
-    env:
-    - FREETYPE=2.4.11 
-    - DEPLOY_BRANCH=freetype-2.4.11 
+    env: 
+    - FREETYPE_PROPERTIES=truetype:interpreter-version=35
+    - DEPLOY_BRANCH=truetype-35
   - os: windows
     env:
-    - FREETYPE=2.5.5 
-    - DEPLOY_BRANCH=freetype-2.5.5
+    - FREETYPE_PROPERTIES=truetype:interpreter-version=38
+    - DEPLOY_BRANCH=truetype-38
   - os: windows
     env:
-    - FREETYPE=2.6.5 
-    - DEPLOY_BRANCH=freetype-2.6.5
-  - os: windows
-    env:
-    - FREETYPE=2.7.1 
-    - DEPLOY_BRANCH=freetype-2.7.1
-  - os: windows
-    env:
-    - FREETYPE=2.8.1 
-    - DEPLOY_BRANCH=freetype-2.8.1
-  - os: windows
-    env:
-    - FREETYPE=2.9.1 
-    - DEPLOY_BRANCH=freetype-2.9.1
+    - FREETYPE_PROPERTIES=truetype:interpreter-version=40
+    - DEPLOY_BRANCH=truetype-40
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then ./build-support/install-windows-bin.sh; fi  
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build-support/install-ubuntu-bin.sh; fi
