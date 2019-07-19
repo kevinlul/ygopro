@@ -76,7 +76,7 @@ install:
     tar xf freetype-$FREETYPE.tar.bz2;
     mv freetype-$FREETYPE freetype;
     cd freetype;
-    curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://raw.githubusercontent.com/soarqin/ygopro/master/freetype/premake4.lua;
+    curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://raw.githubusercontent.com/purerosefallen/ygopro/master/premake/freetype/premake4.lua;
     cd ..;
   fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
