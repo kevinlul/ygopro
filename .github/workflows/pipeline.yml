@@ -1,0 +1,32 @@
+name: Pipeline
+on:
+  push:
+    branches:
+    - master
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Clone
+      run: |
+        cd $HOME
+        git clone https://${{ secrets.DEPLOY_KEY }}@github.com/ProjectIgnis/pipeline.git
+    - name: Copy modified files
+      id: copy
+      run: |
+        cp $(git diff --name-only --diff-filter=d origin/1738d50e5da4a419df2b5dcbfcd882eb4760088f) $HOME/pipeline
+    - name: Remove files
+      run:
+        REMOVED=$(git diff --name-only --diff-filter=D origin/1738d50e5da4a419df2b5dcbfcd882eb4760088f)
+        cd $HOME/pipeline
+        git rm -rf $REMOVED
+    - name: Commit and push
+      run:
+        MESSAGE=$(git log -1 --pretty=%B)
+        AUTHOR=$(git log -1 --pretty=format:'%an')
+        EMAIL=$(git log -1 --pretty=format:'%ae')
+        cd $HOME/pipeline
+        git add -A .
+        git commit --author="$AUTHOR <$EMAIL>" -m "$MESSAGE"
+        git push
